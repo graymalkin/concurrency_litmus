@@ -1,7 +1,11 @@
 #include <stdatomic.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <threads.h>
+#ifdef __STDC_NO_THREADS__
+	#include "c11threads.h"
+#else
+	#include <threads.h>
+#endif
 
 #include "sb.h"
 
@@ -44,6 +48,7 @@ thread_0(void * arg)
 		asm("mfence");
 
 	thrd_exit(y);
+	__builtin_unreachable();
 }
 
 thrd_start_t
@@ -57,4 +62,5 @@ thread_1(void * arg)
 		asm("mfence");
 
 	thrd_exit(x);
+	__builtin_unreachable();
 }

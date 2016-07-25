@@ -5,7 +5,7 @@
 #include "sb.h"
 #include "results.h"
 
-#define VERSION "0.0"
+#define VERSION "0.1"
 
 void parse_params(int argc, char * argv[]);
 
@@ -43,7 +43,14 @@ parse_params(int argc, char * argv[])
 			quiet = 1;
 		}
 		if(strstr(argv[i], "-v")) {
-				printf("Version: " VERSION "\r\n");
+				printf("Litmus Tests:\r\n");
+				printf("  Version: " VERSION "\r\n");
+				printf("  Compiled: " __DATE__ " " __TIME__ " with " __COMPILER__ " " __VERSION__ ".\r\n");
+				#ifdef __STDC_NO_THREADS__
+					printf("  Using pthreads wrapped with \"c11threads.h\".\r\n");
+				#else
+					printf("  Using \"<threads.h>\"\r\n");
+				#endif
 				exit(0);
 		}
 		if(strstr(argv[i], "-I")) {
@@ -53,6 +60,7 @@ parse_params(int argc, char * argv[])
 		if(strstr(argv[i], "-f")) {
 			use_fences = 1;
 		}
+
 		if(strstr(argv[i], "-h") || strstr(argv[i], "-?")) {
 			printf("Litmus Tests:\r\n");
 			printf("  Tests the current architecture for various behaviours.\r\n");

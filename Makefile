@@ -1,11 +1,11 @@
 CC = musl-gcc
-CC_FLAGS = -c -g -Wall -pedantic -std=gnu11
+CC_FLAGS = -c -g -Wall -std=gnu11 -D __COMPILER__="\"$(CC)\""
 CC_FLAGS += $(CPU) -fno-common
 
-LD = musl-gcc
+LD = $(CC)
 LD_FLAGS = -static
 LIBRARY_PATHS =
-LIBRARIES = -lc -lpthread
+LIBRARIES = -lpthread
 
 BINARY_NAME = c_litmus
 
