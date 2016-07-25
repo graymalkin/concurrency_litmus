@@ -7,7 +7,7 @@
 	#include <threads.h>
 #endif
 
-#include "sb.h"
+#include "coww.h"
 
 extern int use_fences;
 thrd_start_t coww_thread_0(void * arg);
@@ -33,7 +33,7 @@ coww_run(int run)
 	thrd_join(thread_0_ptr, &k);
 	thrd_join(thread_1_ptr, &l);
 
-	if(k == 0 && coww_x == 1) {
+	if(k == 1 && coww_x == 1) {
 		return RESULT_WEAK_BEHAVIOUR;
 	}
 	return RESULT_NORMAL_BEHAVIOUR;
@@ -47,8 +47,10 @@ coww_thread_0(void * arg)
 	register int a = coww_x;
 	register int b = coww_y;
 
-	// 0 if a == 0 && b == 0
-	thrd_exit(a + b);
+	if(a == 1 && b == 0)
+		thrd_exit(1);
+	else
+		thrd_exit(0);
 	__builtin_unreachable();
 }
 
