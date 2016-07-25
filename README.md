@@ -6,6 +6,7 @@ C11 thread definitions.
 
 ## Supported tests:
  - SB
+ - "CoWW" (I think this is an example of CoWW, but I stand to be corrected.)
 
 
 ## `mfence` impact
