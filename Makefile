@@ -9,7 +9,7 @@ LIBRARIES = -lpthread
 
 BINARY_NAME = c_litmus
 
-FILES = src/main.o src/sb.o
+FILES = src/main.o src/sb.o src/coww.o
 INCLUDE = -I./lib
 
 COLOR_GREEN =

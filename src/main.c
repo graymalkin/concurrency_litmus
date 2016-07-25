@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "coww.h"
 #include "sb.h"
 #include "results.h"
 
@@ -30,7 +31,22 @@ main(int argc, char * argv[])
 		}
 	}
 
-	printf("%d instances of weak behaviour observed.\n", count);
+	printf("[SB]   %d (%0.2f%%) instances of weak behaviour observed.\n", count, ((float)count / max_itr) * 100);
+
+	count = 0;
+	for(int i = 0; i < max_itr; i++) {
+		result_t res = coww_run(i);
+		count += res == RESULT_WEAK_BEHAVIOUR ? 1 : 0;
+		if(!quiet && res == RESULT_WEAK_BEHAVIOUR) {
+			printf("[SB]   Attempt %d showed weak behaviour\r\n", i);
+		}
+		if(!quiet && i % (max_itr / 100)) {
+			printf("%.2f%%\r", ((float)i / max_itr) * 100);
+		}
+	}
+
+	printf("[CoWW] %d (%0.2f%%) instances of weak behaviour observed.\n", count, ((float)count / max_itr) * 100);
+
 	return 0;
 }
 
