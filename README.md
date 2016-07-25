@@ -1,8 +1,15 @@
 # Concurrency Litmus Tests
 Litmus tests for demonstrating weak memory behaviours.
 
-This should be compiled with [musl](http://www.musl-libc.org/), which supports
-C11 thread definitions.
+## Build
+
+This can be built with most modern compilers. There is a shim in place to add
+C11 style thread support for systems which don't have `threads.h`. The default
+compiler is set to `clang` (`$CC` in the Makefile), feel free to modify to a
+compiler of choice. I've tested with `gcc`, `clang`, and `musl`. Just run `make`
+to build.
+
+Should work just fine on Linux systems.
 
 ## Supported tests:
  - SB

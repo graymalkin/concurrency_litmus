@@ -1,4 +1,4 @@
-CC = musl-gcc
+CC = clang
 CC_FLAGS = -c -g -Wall -std=gnu11 -D __COMPILER__="\"$(CC)\""
 CC_FLAGS += $(CPU) -fno-common
 
