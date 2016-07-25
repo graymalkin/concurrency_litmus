@@ -5,30 +5,34 @@
 
 #include "sb.h"
 
+extern int use_fences;
 thrd_start_t thread_0(void * arg);
 thrd_start_t thread_1(void * arg);
 
 volatile int x = 0;
 volatile int y = 0;
 atomic_int synchronise;
-atomic_int return_value;
 
 result_t
 sb_run(int run)
 {
 	synchronise = 0;
 	x = 0;
-	return_value = 0;
+	y = 0;
 
 	thrd_t thread_0_ptr, thread_1_ptr;
 
 	thrd_create(&thread_0_ptr, (thrd_start_t) &thread_0, NULL);
-	thrd_create(&thread_1_ptr, (thrd_start_t) &thread_1, (void *) &return_value);
+	thrd_create(&thread_1_ptr, (thrd_start_t) &thread_1, NULL);
 
-	if(return_value > 1) {
-		return RESULT_BEHAVIOUR_INCORRECT;
+	int x, y;
+	thrd_join(thread_0_ptr, &x);
+	thrd_join(thread_1_ptr, &y);
+
+	if(x == 0 && y == 0) {
+		return RESULT_WEAK_BEHAVIOUR;
 	}
-	return RESULT_BEHAVIOUR_CORRECT;
+	return RESULT_NORMAL_BEHAVIOUR;
 }
 
 thrd_start_t
@@ -36,12 +40,10 @@ thread_0(void * arg)
 {
 	synchronise = 1;
 	x = 1;
+	if(use_fences)
+		asm("mfence");
 
-	if(y == 0) {
-		return_value++;
-	}
-
-	thrd_exit(0);
+	thrd_exit(y);
 }
 
 thrd_start_t
@@ -51,10 +53,8 @@ thread_1(void * arg)
 		;
 
 	y = 1;
+	if(use_fences)
+		asm("mfence");
 
-	if(x == 0) {
-		return_value++;
-	}
-
-	thrd_exit(0);
+	thrd_exit(x);
 }

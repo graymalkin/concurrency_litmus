@@ -2,8 +2,8 @@
 #define __results_h_
 
 typedef enum result_t {
-	RESULT_BEHAVIOUR_CORRECT,
-	RESULT_BEHAVIOUR_INCORRECT
+	RESULT_NORMAL_BEHAVIOUR,
+	RESULT_WEAK_BEHAVIOUR
 } result_t;
 
 #endif // __results_h_
